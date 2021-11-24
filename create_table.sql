@@ -65,3 +65,57 @@ FOREIGN KEY (MGID) REFERENCES MANAGEMENT_DETAILS(MGID)
 )
 
 ########
+
+
+###################################  SHABANA  ##########################################
+
+CREATE TABLE TENANT_DETAILS(
+tid NUMBER NOT NULL PRIMARY KEY,
+lid NUMBER NOT NULL,
+id_proof_submitted CHAR(1) NOT NULL,
+id_proof_document_type VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE NOTIFICATION(
+nid NUMBER NOT NULL PRIMARY KEY,
+notification_type VARCHAR(255) NOT NULL,
+notification_comments VARCHAR(255) NOT NULL,
+notification_date DATE NOT NULL,
+FOREIGN KEY (mgid) REFERENCES MANAGEMENT_DETAILS(mgid),
+FOREIGN KEY (tid) REFERENCES TENANT_DETAILS(tid)
+);
+
+
+CREATE TABLE COMPLAINT_DETAILS(
+cdid Number NOT NULL PRIMARY KEY,
+c_ref_no Number NOT NULL,
+c_raised_by_name varchar(255) NOT NULL,
+c_raised_by_apt Number NOT NULL,
+c_raised_time Number NOT NULL,
+c_raised_date date NOT NULL,
+c_category varchar(255) NOT NULL,
+c_severity varchar(255) NOT NULL,
+c_description varchar(255) NOT NULL,
+c_status char(1) NOT NULL,
+c_closure_date date NOT NULL,
+FOREIGN KEY (co_id) REFERENCES CONTRACTOR_DETAILS(co_id),
+FOREIGN KEY (nid) REFERENCES NOTIFICATION(nid)
+);
+
+
+CREATE TABLE LAUNDRY_DETAILS(
+la_id NUMBER NOT NULL PRIMARY KEY,
+la_machine_no Number NOT NULL,
+la_washing_load varchar(255) NOT NULL,
+la_drying_load varchar(255) NOT NULL,
+la_time_started date NOT NULL,
+la_time_ended date NOT NULL,
+la_status char(1) NOT NULL,
+la_fee_washing Number NOT NULL,
+la_fee_drying Number NOT NULL,
+la_payment_received char(1) NOT NULL,
+FOREIGN KEY (nid) REFERENCES NOTIFICATION (nid)
+);
+
+#########################################################################
+

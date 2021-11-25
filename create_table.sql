@@ -168,3 +168,65 @@ FOREIGN KEY (nid) REFERENCES NOTIFICATION (nid)
 
 #######################################
 
+###################Sannidhi###############
+
+CREATE TABLE LEASE_DETAILS (
+ lid Number GENERATED ALWAYS AS IDENTITY(START WITH 111111 INCREMENT BY 1),
+ lease_type CHAR(1) NOT NULL,
+ lease_start_date date NOT NULL,
+ lease_end_date date NOT NULL,
+ is_sublet_allowed char(1) NOT NULL,
+ subletting_charges Number NOT NULL, 
+ is_active char(1) NOT NULL,
+ security_deposit Number NOT NULL,
+ balance_amount Number,
+ date_created  date DEFAULT SYSDATE NOT NULL,
+ rent Number NOT NULL,
+ is_cancellation_allowed char(1) NOT NULL,
+ cancellation_charges Number, 
+ cancel_status varchar(100),
+ is_extension_allowed char(1) NOT NULL,
+ extension_status char(1),
+ extension_charges Number,
+ extension_comments varchar(100),
+ new_start_date date,
+ new_end_date date,
+ new_rent Number,
+ CONSTRAINT PK_LID PRIMARY KEY (LID)  
+ );
+ 
+ 
+ CREATE TABLE PAYMENT_DETAILS ( 
+  PID NUMBER,--to be incremented
+  LID NUMBER,
+  PAYMENT_DATE DATE NOT NULL,
+  PAYMENT_METHOD VARCHAR(50),
+  PAYMENT_BY_NAME VARCHAR(100) NOT NULL,
+  PAYMENT_TO_NAME VARCHAR(100) NOT NULL,
+  PAYMENT_AMOUNT NUMBER NOT NULL,
+  PAYMENT_CATEGORY VARCHAR(50),
+  PAYMENT_STATUS CHAR(1) NOT NULL,
+  CONSTRAINT PK_PID PRIMARY KEY (PID),
+  CONSTRAINT FK_LID FOREIGN KEY (LID)
+  REFERENCES LEASE_DETAILS (LID) ON DELETE CASCADE
+  );
+  
+  
+ CREATE TABLE BOOKING (
+  BOOKID NUMBER, --TO BE INCREMENTED 
+  USID NUMBER NOT NULL,
+  AID NUMBER NOT NULL,
+  MGID NUMBER NOT NULL,
+  BOOKING_FEES NUMBER NOT NULL,
+  BOOKING_STATUS CHAR(1) NOT NULL,
+  BOOKING_DATE DATE DEFAULT SYSDATE NOT NULL,
+  CONSTRAINT PK_BOOKID PRIMARY KEY (BOOKID),
+  CONSTRAINT FK_USID FOREIGN KEY (USID)
+  REFERENCES USER_DETAILS (USID),
+  CONSTRAINT FK_AID FOREIGN KEY (AID)
+  REFERENCES APARTMENT_DETAILS (AID),
+  CONSTRAINT FK_MGID FOREIGN KEY (MGID)
+  REFERENCES MANAGEMENT_DETAILS (MGID)
+  );
+  
+###########################################

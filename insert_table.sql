@@ -120,5 +120,20 @@ dbms_output.put_line(dbms_utility.format_error_stack);
 dbms_output.put_line('----------------------------------------------------------');
 end INSERT_LEASE_DETAILS;
 end;
+
+create or replace procedure user_login_creation is table_name varchar2(1000);   
+BEGIN
+-- table creation query
+   table_name:='
+CREATE TABLE USER_LOGIN(
+USERNAME VARCHAR(50),
+PASSWORD VARCHAR(50) NOT NULL,
+USID NUMBER NOT NULL,
+CHECK(REGEXP_LIKE(USERNAME,''^[A-Za-z0-9]{1,16}$'')),
+constraint PK_USERNAME PRIMARY KEY(USERNAME),
+FOREIGN KEY (USID) REFERENCES USER_DETAILS(USID)
+)';
+   EXECUTE IMMEDIATE table_name;
+end user_login_creation;
 #####################################################################################
 

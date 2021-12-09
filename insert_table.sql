@@ -135,5 +135,19 @@ FOREIGN KEY (USID) REFERENCES USER_DETAILS(USID)
 )';
    EXECUTE IMMEDIATE table_name;
 end user_login_creation;
+
+create or replace procedure management_details_creation is table_name varchar2(1000);   
+BEGIN
+-- table creation query
+   table_name:='
+CREATE TABLE MANAGEMENT_DETAILS(
+MGID NUMBER,
+M_COMPANY_NAME VARCHAR(100) NOT NULL,
+M_REGISTRATION_STATUS CHAR(1) NOT NULL,
+M_DATE_CREATED DATE DEFAULT SYSDATE NOT NULL,
+constraint PK_MGID PRIMARY KEY(MGID)
+)';
+   EXECUTE IMMEDIATE table_name;
+end management_details_creation;
 #####################################################################################
 

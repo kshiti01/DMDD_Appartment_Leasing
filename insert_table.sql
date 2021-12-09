@@ -68,3 +68,57 @@ END IF;
 commit;
 END;
 
+#########################SANNIDHI###########################
+create or replace procedure lease_details_creation is table_name varchar2(4000);   
+BEGIN
+-- table creation query
+   table_name:='CREATE TABLE LEASE_DETAILS (
+ lid Number GENERATED ALWAYS AS IDENTITY(START WITH 111 INCREMENT BY 1),
+ lease_type CHAR(1) NOT NULL,
+ lease_start_date date NOT NULL,
+ lease_end_date date NOT NULL,
+ is_sublet_allowed char(1) NOT NULL,
+ subletting_charges Number NOT NULL, 
+ is_active char(1) NOT NULL,
+ security_deposit Number NOT NULL,
+ balance_amount Number,
+ date_created  date DEFAULT SYSDATE NOT NULL,
+ rent Number NOT NULL,
+ is_cancellation_allowed char(1) NOT NULL,
+ cancellation_charges Number, 
+ cancel_status varchar(100),
+ is_extension_allowed char(1) NOT NULL,
+ extension_status char(1),
+ extension_charges Number,
+ extension_comments varchar(100),
+ new_start_date date,
+ new_end_date date,
+ new_rent Number,
+ CONSTRAINT PK_LID PRIMARY KEY (LID)  
+ )';
+   EXECUTE IMMEDIATE table_name;
+end lease_details_creation;
+
+create or replace PACKAGE BODY INSERTION
+AS
+PROCEDURE INSERT_LEASE_DETAILS(l_type in CHAR, l_start_date in DATE,l_end_date in DATE, is_sub_allowed in DATE, sub_charges in NUMBER, is_active in CHAR,sec_deposit in NUMBER, bal_amt in NUMBER, dat_created in DATE, rent in NUMBER, is_cancel_allowed in CHAR,cancel_charges in NUMBER, cancel_status in VARCHAR, is_ext_allowed in CHAR, ext_status in CHAR,ext_charges in NUMBER, ext_comments in VARCHAR, new_start_dat in DATE, new_end_dat in DATE, new_rent in NUMBER)
+AS
+BEGIN
+dbms_output.put_line('----------------------------------------------------------');
+insert into LEASE_DETAILS(LEASE_TYPE,LEASE_START_DATE,LEASE_END_DATE,IS_SUBLET_ALLOWED,SUBLETTING_CHARGES,IS_ACTIVE,SECURITY_DEPOSIT,BALANCE_AMOUNT,DATE_CREATED,RENT,IS_CANCELLATION_ALLOWED,CANCELLATION_CHARGES,CANCEL_STATUS,IS_EXTENSION_ALLOWED,EXTENSION_STATUS,EXTENSION_CHARGES,EXTENSION_COMMENTS,NEW_START_DATE,NEW_END_DATE,NEW_RENT) values (l_type,l_start_date,l_end_date,is_sub_allowed,sub_charges,is_active,sec_deposit,bal_amt,dat_created,rent,is_cancel_allowed,cancel_charges,cancel_status,is_ext_allowed,ext_status,ext_charges,ext_comments,new_start_dat,new_end_dat,new_rent);
+dbms_output.put_line('Row inserted into LEASE_DETAILS Table');
+dbms_output.put_line('----------------------------------------------------------');
+commit;
+exception
+when dup_val_on_index then
+dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+when others then
+dbms_output.put_line('Error while inserting data into LEASE_DETAILS Table');
+rollback;
+dbms_output.put_line('The error encountered is: ');
+dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('----------------------------------------------------------');
+end INSERT_LEASE_DETAILS;
+end;
+#####################################################################################
+

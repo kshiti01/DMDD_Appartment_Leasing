@@ -221,3 +221,50 @@ BEGIN
 end lease_details_creation;
 
 
+########### ATHARVA############################
+
+create or replace procedure apartment_details_creation is table_name varchar2(4000);
+BEGIN
+-- table creation query
+table_name:='CREATE TABLE apartment_details
+             (
+                          aid                 NUMBER  generated always AS identity(start WITH 300 increment BY 1),
+                          availability        varchar2(255) NOT NULL,
+                          no_of_tenants       number NOT NULL,
+                          building_type       varchar2(255) NOT NULL,
+                          built_year          number(4) NOT NULL,
+                          location            varchar2(255) NOT NULL,
+                          unit_no             number NOT NULL,
+                          sqt_area            number NOT NULL,
+                          building_no         number NOT NULL,
+                          ac_system           CHAR(1) NOT NULL,
+                          heater_system       CHAR(1) NOT NULL,
+                          hot_water           CHAR(1) NOT NULL,
+                          gas_connection      CHAR(1) NOT NULL,
+                          electricity         CHAR(1) NOT NULL,
+                          asbestos            CHAR(1) NOT NULL,
+                          refrigarator        CHAR(1) NOT NULL,
+                          no_of_bedrooms      CHAR(1) NOT NULL,
+                          floor_no            number NOT NULL,
+                          parking_available   CHAR(1) NOT NULL,
+                          no_of_keys          number(1) NOT NULL,
+                          oven                CHAR(1) NOT NULL,
+                          status_keylock      CHAR(1) NOT NULL,
+                          status_windows      CHAR(1) NOT NULL,
+                          status_door         CHAR(1) NOT NULL,
+                          status_toiletsink   CHAR(1) NOT NULL,
+                          status_washsink     CHAR(1) NOT NULL,
+                          owner_name          varchar2(255) NOT NULL,
+                          special_description varchar2(1) NOT NULL,
+                          no_of_bathrooms     number NOT NULL,
+                          no_of_balcony       varchar2(255) NOT NULL,
+                          broker_commission   number NOT NULL,
+                          mgid                number NOT NULL,
+                          CONSTRAINT pk_aid PRIMARY KEY (aid),
+                          CONSTRAINT fk_apt_mgid FOREIGN KEY (mgid) REFERENCES admin.management_details (mgid)
+             )';
+
+
+EXECUTE IMMEDIATE table_name;
+end apartment_details_creation;
+

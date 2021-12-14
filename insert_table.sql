@@ -273,6 +273,75 @@ BEGIN
 end INSERT_TENANT_DETAILS;
 #####################################################
 
+############################ATHARVA#####################
 
+
+
+--------------------------INSERT_USER_DETAILS-----------------------------------
+
+
+
+PROCEDURE INSERT_USER_DETAILS(FIRST_NAME in VARCHAR2,LAST_NAME in VARCHAR2,PHONE_NO in NUMBER,EMAIL in VARCHAR2,USER_NAME in VARCHAR2,PASS_WORD in VARCHAR2,ADDRESS_LINE1 in VARCHAR2,ADDRESS_LINE2 in VARCHAR2,CITY in VARCHAR2,ZIPCODE in NUMBER,RESIDENCE_STATE in VARCHAR2,COUNTRY in VARCHAR2,DOB in DATE,SEX in VARCHAR2,ROLE_ID in NUMBER,DATE_CREATED in DATE)
+AS
+BEGIN
+dbms_output.put_line('----------------------------------------------------------');
+insert into USER_DETAILS(FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED) values (FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED);
+dbms_output.put_line('Row inserted into USER_DETAILS Table');
+dbms_output.put_line('----------------------------------------------------------');
+commit;
+exception
+when dup_val_on_index then
+dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+when others then
+dbms_output.put_line('Error while inserting data into USER_DETAILS Table');
+rollback;
+dbms_output.put_line('The error encountered is: ');
+dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('----------------------------------------------------------');
+end INSERT_USER_DETAILS;
+
+
+-----------------------INSERT_NOTIFICATION-------------------------
+PROCEDURE INSERT_NOTIFICATION(ntfy_type in VARCHAR, ntfy_cmnts in VARCHAR, creation_date in DATE, ntfy_date in DATE, mgid in NUMBER, tid in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into NOTIFICATION(NOTIFICATION_TYPE, NOTIFICATION_COMMENTS, DATE_CREATED, NOTIFICATION_DATE, MGID, TID) values (ntfy_type, ntfy_cmnts, creation_date, ntfy_date, mgid, tid);
+	dbms_output.put_line('Row inserted into NOTIFICATION Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into NOTIFICATION Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_NOTIFICATION;
+
+
+-----------------------INSERT_USER_ROLES-------------------------
+PROCEDURE INSERT_USER_ROLES(ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into USER_ROLES(ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE) values (ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE);
+	dbms_output.put_line('Row inserted into USER_ROLES Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into USER_ROLES Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_USER_ROLES;
+
+########################################################
 
 

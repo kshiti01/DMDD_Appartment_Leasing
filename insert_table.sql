@@ -226,5 +226,53 @@ create or replace PACKAGE BODY INSERTION
 ###################################################################
 
 
+#############ATHARVA###################################
+
+   -------------------####INSERT_APARTMENT_DETAILS####----------------------------------
+
+PROCEDURE INSERT_APARTMENT_DETAILS(AVAILABILITY in	VARCHAR2,NO_OF_TENANTS in	NUMBER,BUILDING_TYPE	in VARCHAR2,BUILT_YEAR in	NUMBER,LOCATION	in VARCHAR2,UNIT_NO	in NUMBER,SQT_AREA in	NUMBER,BUILDING_NO	in NUMBER,AC_SYSTEM	in CHAR,HEATER_SYSTEM	in CHAR,HOT_WATER in	CHAR,GAS_CONNECTION in	CHAR,ELECTRICITY	in CHAR,ASBESTOS	in CHAR,REFRIGARATOR	in CHAR,NO_OF_BEDROOMS	in CHAR,FLOOR_NO	in NUMBER,PARKING_AVAILABLE	in CHAR,NO_OF_KEYS	in NUMBER,OVEN	in CHAR,STATUS_KEYLOCK	in CHAR,STATUS_WINDOWS	in CHAR,STATUS_DOOR	in CHAR,STATUS_TOILETSINK	in CHAR,STATUS_WASHSINK	in CHAR,OWNER_NAME	in VARCHAR2,SPECIAL_DESCRIPTION	in VARCHAR2,NO_OF_BATHROOMS	in NUMBER,NO_OF_BALCONY	in VARCHAR2,BROKER_COMMISSION	in NUMBER,MGID	in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into APARTMENT_DETAILS(AVAILABILITY,NO_OF_TENANTS,BUILDING_TYPE,BUILT_YEAR,LOCATION,UNIT_NO,SQT_AREA,BUILDING_NO,AC_SYSTEM,HEATER_SYSTEM,HOT_WATER,GAS_CONNECTION,
+ELECTRICITY,ASBESTOS,REFRIGARATOR,NO_OF_BEDROOMS,FLOOR_NO,PARKING_AVAILABLE,NO_OF_KEYS,OVEN,STATUS_KEYLOCK,STATUS_WINDOWS,STATUS_DOOR,STATUS_TOILETSINK,STATUS_WASHSINK,OWNER_NAME,SPECIAL_DESCRIPTION,NO_OF_BATHROOMS,NO_OF_BALCONY,BROKER_COMMISSION,MGID) values (AVAILABILITY,
+NO_OF_TENANTS,BUILDING_TYPE,BUILT_YEAR,LOCATION,UNIT_NO,SQT_AREA,BUILDING_NO,AC_SYSTEM,HEATER_SYSTEM,HOT_WATER,GAS_CONNECTION,ELECTRICITY,ASBESTOS,REFRIGARATOR,
+NO_OF_BEDROOMS,FLOOR_NO,PARKING_AVAILABLE,NO_OF_KEYS,OVEN,STATUS_KEYLOCK,STATUS_WINDOWS,STATUS_DOOR,STATUS_TOILETSINK,STATUS_WASHSINK,OWNER_NAME,SPECIAL_DESCRIPTION,NO_OF_BATHROOMS,NO_OF_BALCONY,BROKER_COMMISSION,MGID);
+	dbms_output.put_line('Row inserted into APARTMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into APARTMENT-DETAILS Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_APARTMENT_DETAILS;	
+
+--------------------------INSERT_TENANT_DETAILS-----------------------------------
+PROCEDURE INSERT_TENANT_DETAILS(LID in NUMBER,ID_PROOF_SUBMITTED in CHAR,ID_PROOF_DOCUMENT_TYPE in VARCHAR)
+AS
+BEGIN
+    dbms_output.put_line('----------------------------------------------------------');
+    insert into TENANT_DETAILS(LID,ID_PROOF_SUBMITTED,ID_PROOF_DOCUMENT_TYPE) values (LID,ID_PROOF_SUBMITTED,ID_PROOF_DOCUMENT_TYPE);
+    dbms_output.put_line('Row inserted into TENANT_DETAILS Table');
+    dbms_output.put_line('----------------------------------------------------------');
+    commit;
+    exception
+    when dup_val_on_index then
+    dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+    when others then
+    dbms_output.put_line('Error while inserting data into TENANT_DETAILS Table');
+    rollback;
+    dbms_output.put_line('The error encountered is: ');
+    dbms_output.put_line(dbms_utility.format_error_stack);
+    dbms_output.put_line('----------------------------------------------------------');
+end INSERT_TENANT_DETAILS;
+#####################################################
+
+
 
 

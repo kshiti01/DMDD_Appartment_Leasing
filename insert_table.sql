@@ -157,3 +157,74 @@ constraint PK_MGID PRIMARY KEY(MGID)
 end management_details_creation;
 #####################################################################################
 
+#########SHABANA###############################
+
+create or replace PACKAGE BODY INSERTION
+	AS
+	PROCEDURE INSERT_LEASE_DETAILS(l_type in CHAR, l_start_date in DATE,l_end_date in DATE, is_sub_allowed in CHAR, sub_charges in NUMBER, is_active in CHAR,sec_deposit in NUMBER, bal_amt in NUMBER, dat_created in DATE, rent in NUMBER, is_cancel_allowed in CHAR,cancel_charges in NUMBER, cancel_status in VARCHAR, is_ext_allowed in CHAR, ext_status in CHAR,ext_charges in NUMBER, ext_comments in VARCHAR, new_start_dat in DATE, new_end_dat in DATE, new_rent in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+    dbms_output.put_line(l_start_date);
+	insert into LEASE_DETAILS(LEASE_TYPE,LEASE_START_DATE,LEASE_END_DATE,IS_SUBLET_ALLOWED,SUBLETTING_CHARGES,IS_ACTIVE,SECURITY_DEPOSIT,BALANCE_AMOUNT,DATE_CREATED,RENT,IS_CANCELLATION_ALLOWED,CANCELLATION_CHARGES,CANCEL_STATUS,IS_EXTENSION_ALLOWED,EXTENSION_STATUS,EXTENSION_CHARGES,EXTENSION_COMMENTS,NEW_START_DATE,NEW_END_DATE,NEW_RENT) values (l_type,l_start_date,l_end_date,is_sub_allowed,sub_charges,is_active,sec_deposit,bal_amt,dat_created,rent,is_cancel_allowed,cancel_charges,cancel_status,is_ext_allowed,ext_status,ext_charges,ext_comments,new_start_dat,new_end_dat,new_rent);
+	dbms_output.put_line('Row inserted into LEASE_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into LEASE_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_LEASE_DETAILS;
+    
+    
+---------------------INSERT_MGMT_DETAILS----------------------------------
+	PROCEDURE INSERT_MGMT_DETAILS(mg_comp_name in VARCHAR, mg_reg_status in CHAR, mg_datcreated in DATE)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into MANAGEMENT_DETAILS(M_COMPANY_NAME,M_REGISTRATION_STATUS,M_DATE_CREATED) values (mg_comp_name,mg_reg_status,mg_datcreated);
+	dbms_output.put_line('Row inserted into MANAGEMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into MANAGEMENT_DETAILS Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_MGMT_DETAILS;
+    
+    
+    -------------------####INSERT_BOOKING_DETAILS####----------------------------------
+    PROCEDURE INSERT_BOOKING_DETAILS(user_id in NUMBER, aid in NUMBER, mgid in NUMBER, bkng_fees in NUMBER, bkng_status in CHAR,bkng_date in date)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into BOOKING(user_id,aid,mgid,booking_fees,booking_status,booking_date) values (user_id,aid,mgid,bkng_fees,bkng_status,bkng_date);
+	dbms_output.put_line('Row inserted into BOOKING Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into BOOKING Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_BOOKING_DETAILS;	
+
+###################################################################
+
+
+
+

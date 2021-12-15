@@ -802,7 +802,7 @@ END;
 
 
 -----------###############INDEX CREATION############-----------------------------
-
+/*
 SET SERVEROUTPUT ON;
 declare
 EXISTS_ALREADY exception;
@@ -815,3 +815,4 @@ when EXISTS_ALREADY then
 dbms_output.put_line( 'Index "usr_name_idx" exists already!' );
 null;
 end;
+*/

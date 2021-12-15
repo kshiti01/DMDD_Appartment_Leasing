@@ -30,3 +30,5 @@ extend or terminate the lease.
 - Broker --> UserName: **testBroker**   Password:**InfoDmdd123456**
 - Management --> UserName: **testMgmt**   Password:**InfoDmdd123456**
 - Contractor -->UserName: **testCon**   Password:**InfoDmdd123456**
+-  Execute as 
+-  username connect;

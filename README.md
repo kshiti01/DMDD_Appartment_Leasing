@@ -24,6 +24,7 @@ extend or terminate the lease.
 - Step 5: Run the SQL file **Insert_values_script_3** to insert values into the created tables
 - Step 6: Run the SQL file **Reports_Script_4** to generate reports
 - Step 7: Run the SQL file **purge_DB_5** to drop procedures, tables and insertions.
+- Step 8: Report outputs seen in file ****
 
 ##**Test User Credentials**
 - Registered User -->  UserName: **testUser**  Password:**InfoDmdd123456**

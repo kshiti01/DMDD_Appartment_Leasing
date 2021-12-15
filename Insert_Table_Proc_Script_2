@@ -204,3 +204,87 @@ BEGIN
     dbms_output.put_line(dbms_utility.format_error_stack);
     dbms_output.put_line('----------------------------------------------------------');
 end INSERT_TENANT_DETAILS;
+
+
+----------------------------------INSERT_PAYMENT_DETAILS--------------------------------
+PROCEDURE INSERT_PAYMENT_DETAILS(LID in NUMBER,PAYMENT_DATE in DATE,PAYMENT_METHOD in VARCHAR2,PAYMENT_BY_NAME in VARCHAR2,PAYMENT_TO_NAME in VARCHAR2,PAYMENT_AMOUNT in NUMBER,PAYMENT_CATEGORY in VARCHAR2,PAYMENT_STATUS in CHAR)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into PAYMENT_DETAILS(LID,PAYMENT_DATE,PAYMENT_METHOD,PAYMENT_BY_NAME,PAYMENT_TO_NAME,PAYMENT_AMOUNT,PAYMENT_CATEGORY,PAYMENT_STATUS) values (LID,PAYMENT_DATE,PAYMENT_METHOD,PAYMENT_BY_NAME,PAYMENT_TO_NAME,PAYMENT_AMOUNT,PAYMENT_CATEGORY,PAYMENT_STATUS);
+	dbms_output.put_line('Row inserted into PAYMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found in PAYMENT_DETAILS! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into PAYMENT_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_PAYMENT_DETAILS;
+
+-----------------------------------------------INSERT_NOTIFICATION--------------------------------
+PROCEDURE INSERT_NOTIFICATION(ntfy_type in VARCHAR, ntfy_cmnts in VARCHAR, creation_date in DATE, ntfy_date in DATE, mgid in NUMBER, tid in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into NOTIFICATION(NOTIFICATION_TYPE, NOTIFICATION_COMMENTS, DATE_CREATED, NOTIFICATION_DATE, MGID, TID) values (ntfy_type, ntfy_cmnts, creation_date, ntfy_date, mgid, tid);
+	dbms_output.put_line('Row inserted into NOTIFICATION Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found in NOTIFICATION! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into NOTIFICATION Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_NOTIFICATION;
+
+------------------------------------INSERT_LAUNDRY_DETAILS--------------------------------
+PROCEDURE INSERT_LAUNDRY_DETAILS(LA_MACHINE_NO in NUMBER,LA_WASHING_LOAD in VARCHAR2,LA_DRYING_LOAD in VARCHAR2,LA_TIME_STARTED in TIMESTAMP,LA_TIME_ENDED in TIMESTAMP,LA_STATUS in CHAR,LA_FEE_WASHING in NUMBER,LA_FEE_DRYING in NUMBER,LA_PAYMENT_RECEIVED in CHAR,NID in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into LAUNDRY_DETAILS(LA_MACHINE_NO,LA_WASHING_LOAD,LA_DRYING_LOAD,LA_TIME_STARTED,LA_TIME_ENDED,LA_STATUS,LA_FEE_WASHING,LA_FEE_DRYING,LA_PAYMENT_RECEIVED,NID) values (LA_MACHINE_NO,LA_WASHING_LOAD,LA_DRYING_LOAD,LA_TIME_STARTED,LA_TIME_ENDED,LA_STATUS,LA_FEE_WASHING,LA_FEE_DRYING,LA_PAYMENT_RECEIVED,NID);
+	dbms_output.put_line('Row inserted into LAUNDRY_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found in LAUNDRY_DETAILS! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into LAUNDRY_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_LAUNDRY_DETAILS;
+
+-----------------------INSERT_COMPLAINT_DETAILS-------------------------
+PROCEDURE INSERT_COMPLAINT_DETAILS(C_REF_NO in NUMBER,C_RAISED_BY_NAME in VARCHAR2,C_RAISED_BY_APT in NUMBER,C_RAISED_TIME in TIMESTAMP,C_RAISED_DATE in DATE,C_CATEGORY in VARCHAR2,C_SEVERITY in VARCHAR2,C_DESCRIPTION in VARCHAR2,C_STATUS in CHAR,C_CLOSURE_DATE in DATE,CO_ID in NUMBER,NID in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into COMPLAINT_DETAILS(C_REF_NO,C_RAISED_BY_NAME,C_RAISED_BY_APT,C_RAISED_TIME,C_RAISED_DATE,C_CATEGORY,C_SEVERITY,C_DESCRIPTION,C_STATUS,C_CLOSURE_DATE,CO_ID,NID) values (C_REF_NO,C_RAISED_BY_NAME,C_RAISED_BY_APT,C_RAISED_TIME,C_RAISED_DATE,C_CATEGORY,C_SEVERITY,C_DESCRIPTION,C_STATUS,C_CLOSURE_DATE,CO_ID,NID);
+	dbms_output.put_line('Row inserted into COMPLAINT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found in COMPLAINT_DETAILS! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into COMPLAINT_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_COMPLAINT_DETAILS;
+
+end;
+/

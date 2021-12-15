@@ -1,0 +1,46 @@
+SET SERVEROUTPUT ON;
+
+>drop table "APARTMENT_DETAILS" cascade constraints PURGE;
+>drop table "BOOKING" cascade constraints PURGE;
+>drop table "COMPLAINT_DETAILS" cascade constraints PURGE;
+>drop table "CONTRACTOR_DETAILS" cascade constraints PURGE;
+>drop table "LAUNDRY_DETAILS" cascade constraints PURGE;
+>drop table "LEASE_DETAILS" cascade constraints PURGE;
+>drop table "MAINTENANCE_DETAILS" cascade constraints PURGE;
+>drop table "MANAGEMENT_DETAILS" cascade constraints PURGE;
+>drop table "NOTIFICATION" cascade constraints PURGE;
+>drop table "PAYMENT_DETAILS" cascade constraints PURGE;
+>drop table "TENANT_DETAILS" cascade constraints PURGE;
+>drop table "USER_DETAILS" cascade constraints PURGE;
+>drop table "USER_ROLES" cascade constraints PURGE;
+
+>drop PACKAGE INSERTION;
+
+>drop procedure apartment_details_creation;
+>drop procedure booking_details_creation;
+>drop procedure complaint_details_creation;
+>drop procedure contractor_details_creation;
+>drop procedure LAUNDRY_DETAILS_CREATION;
+>drop procedure lease_details_creation;
+>drop procedure maintenance_details_creation;
+>drop procedure management_details_creation;
+>drop procedure notification_creation;
+>drop procedure payment_details_creation;
+>drop procedure tenant_details_creation;
+>drop procedure user_details_creation;
+>drop procedure USER_ROLE_CREATION;
+  
+>drop user testUser;
+>drop user testTenant;
+>drop user testBroker;
+>drop user  testMgmt;
+>drop user testCon;
+
+>drop role R_USER;
+>drop role TENANT;
+>drop role BROKER;
+>drop role MANAGEMENT;
+>drop role CONTRACTOR;
+
+	
+   

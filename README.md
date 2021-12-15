@@ -4,7 +4,7 @@ property management agencies to view available apartments along with their featu
 utilities provided. The user can successfully book available apartments on lease and may also
 extend or terminate the lease. 
 
-##Team Members
+##**Team Members**
 - ATHARVA PANDE - **001556270**
 - KSHITIJA SURYAVANSHI - **001539935**
 - SANNIDHI SANNIDHI - **002109583** 
@@ -24,7 +24,7 @@ extend or terminate the lease.
 -
 -
 
-##Test User Credentials
+##**Test User Credentials**
 - Registered --> User UserName: **testUser** Password:**InfoDmdd123456**
 - Tenant --> UserName: **testTenant** Password:**InfoDmdd123456**
 - Broker --> UserName: **testBroker** Password:**InfoDmdd123456**

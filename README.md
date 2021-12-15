@@ -11,10 +11,10 @@ extend or terminate the lease.
 - SHABANA MYDEEN ABDUL KADIR - **002109589**
 
 ##**Features**
--Automated with scripts
--User Roles for for Access Control
--DDL, DML queries
--Reports
+- Automated with scripts
+- User Roles for for Access Control
+- DDL, DML queries
+- Reports
 
 ##**INSTRUCTIONS**
 -
@@ -25,8 +25,8 @@ extend or terminate the lease.
 -
 
 ##Test User Credentials
--Registered --> User UserName: testUser Password:InfoDmdd123456
--Tenant --> UserName: testTenant Password:InfoDmdd123456
--Broker --> UserName: testBroker Password:InfoDmdd123456
--Management --> UserName: testMgmt Password:InfoDmdd123456
--Contractor -->UserName: testCon Password:InfoDmdd123456
+- Registered --> User UserName: **testUser** Password:**InfoDmdd123456**
+- Tenant --> UserName: **testTenant** Password:**InfoDmdd123456**
+- Broker --> UserName: **testBroker** Password:**InfoDmdd123456**
+- Management --> UserName: **testMgmt** Password:**InfoDmdd123456**
+- Contractor -->UserName: **testCon** Password:**InfoDmdd123456**

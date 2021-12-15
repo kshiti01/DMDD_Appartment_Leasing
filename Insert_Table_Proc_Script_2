@@ -1,0 +1,82 @@
+------------####INSERT PROC####--------------
+------------####PACKAGE DEC####--------------
+create or replace PACKAGE INSERTION
+AS
+PROCEDURE INSERT_USER_ROLES(ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR);
+PROCEDURE INSERT_USER_DETAILS(FIRST_NAME in VARCHAR2,LAST_NAME in VARCHAR2,PHONE_NO in NUMBER,EMAIL in VARCHAR2,USER_NAME in VARCHAR2,PASS_WORD in VARCHAR2,ADDRESS_LINE1 in VARCHAR2,ADDRESS_LINE2 in VARCHAR2,CITY in VARCHAR2,ZIPCODE in NUMBER,RESIDENCE_STATE in VARCHAR2,COUNTRY in VARCHAR2,DOB in DATE,SEX in VARCHAR2,ROLE_ID in NUMBER,DATE_CREATED in DATE);
+PROCEDURE INSERT_MGMT_DETAILS(mg_comp_name in VARCHAR,mg_reg_status in CHAR,mg_datcreated in DATE);
+PROCEDURE INSERT_APARTMENT_DETAILS(AVAILABILITY in	VARCHAR2,NO_OF_TENANTS in	NUMBER,BUILDING_TYPE	in VARCHAR2,BUILT_YEAR in	NUMBER,LOCATION	in VARCHAR2,UNIT_NO	in NUMBER,SQT_AREA in	NUMBER,BUILDING_NO	in NUMBER,AC_SYSTEM	in CHAR,HEATER_SYSTEM	in CHAR,HOT_WATER in	CHAR,GAS_CONNECTION in	CHAR,ELECTRICITY	in CHAR,ASBESTOS	in CHAR,REFRIGARATOR	in CHAR,NO_OF_BEDROOMS	in CHAR,FLOOR_NO	in NUMBER,PARKING_AVAILABLE	in CHAR,NO_OF_KEYS	in NUMBER,OVEN	in CHAR,STATUS_KEYLOCK	in CHAR,STATUS_WINDOWS	in CHAR,STATUS_DOOR	in CHAR,STATUS_TOILETSINK	in CHAR,STATUS_WASHSINK	in CHAR,OWNER_NAME	in VARCHAR2,SPECIAL_DESCRIPTION	in VARCHAR2,NO_OF_BATHROOMS	in NUMBER,NO_OF_BALCONY	in VARCHAR2,BROKER_COMMISSION	in NUMBER,MGID	in NUMBER);
+PROCEDURE INSERT_CONTRACTOR_DETAILS(STAFF_ROLE in VARCHAR2,CO_SPECIALTY in VARCHAR2,CO_HOURS in NUMBER,CO_RATE in NUMBER,CO_EMP_START_DATE in DATE,CO_EMP_END_DATE in DATE,MGID in NUMBER);
+PROCEDURE INSERT_MAINTENANCE_DETAILS(MAINTENANCE_TYPE in VARCHAR2,MAINTENANCE_COMMENTS in VARCHAR2,FREQUENCY in NUMBER,DATE_LAST_DONE in DATE,COMPLIANCE_STATUS in CHAR,MGID in NUMBER);
+PROCEDURE INSERT_BOOKING_DETAILS(user_id in NUMBER, aid in NUMBER, mgid in NUMBER, bkng_fees in NUMBER, bkng_status in CHAR,bkng_date in date);
+PROCEDURE INSERT_LEASE_DETAILS(l_type in CHAR, l_start_date in DATE,l_end_date in DATE, is_sub_allowed in CHAR, sub_charges in NUMBER, is_active in CHAR, sec_deposit in NUMBER, bal_amt in NUMBER, dat_created in DATE, rent in NUMBER, is_cancel_allowed in CHAR,cancel_charges in NUMBER, cancel_status in VARCHAR, is_ext_allowed in CHAR, ext_status in CHAR,ext_charges in NUMBER, ext_comments in VARCHAR, new_start_dat in DATE, new_end_dat in DATE, new_rent in NUMBER,aid in NUMBER);
+PROCEDURE INSERT_TENANT_DETAILS(LID in NUMBER,ID_PROOF_SUBMITTED in CHAR,ID_PROOF_DOCUMENT_TYPE in VARCHAR);
+PROCEDURE INSERT_PAYMENT_DETAILS(LID in NUMBER,PAYMENT_DATE in DATE,PAYMENT_METHOD in VARCHAR2,PAYMENT_BY_NAME in VARCHAR2,PAYMENT_TO_NAME in VARCHAR2,PAYMENT_AMOUNT in NUMBER,PAYMENT_CATEGORY in VARCHAR2,PAYMENT_STATUS in CHAR);
+PROCEDURE INSERT_NOTIFICATION(ntfy_type in VARCHAR, ntfy_cmnts in VARCHAR, creation_date in DATE, ntfy_date in DATE, mgid in NUMBER, tid in NUMBER);
+PROCEDURE INSERT_LAUNDRY_DETAILS(LA_MACHINE_NO in NUMBER,LA_WASHING_LOAD in VARCHAR2,LA_DRYING_LOAD in VARCHAR2,LA_TIME_STARTED in TIMESTAMP,LA_TIME_ENDED in TIMESTAMP,LA_STATUS in CHAR,LA_FEE_WASHING in NUMBER,LA_FEE_DRYING in NUMBER,LA_PAYMENT_RECEIVED in CHAR,NID in NUMBER);
+PROCEDURE INSERT_COMPLAINT_DETAILS(C_REF_NO in NUMBER,C_RAISED_BY_NAME in VARCHAR2,C_RAISED_BY_APT in NUMBER,C_RAISED_TIME in TIMESTAMP,C_RAISED_DATE in DATE,C_CATEGORY in VARCHAR2,C_SEVERITY in VARCHAR2,C_DESCRIPTION in VARCHAR2,C_STATUS in CHAR,C_CLOSURE_DATE in DATE,CO_ID in NUMBER,NID in NUMBER);
+END;
+/
+create or replace PACKAGE BODY INSERTION
+	AS
+	
+---------------------------------------------------------INSERT_USER_ROLES-------------------------
+PROCEDURE INSERT_USER_ROLES(ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into USER_ROLES(ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE) values (ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE);
+	dbms_output.put_line('Row inserted into USER_ROLES Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found in USER_ROLES! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into USER_ROLES Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_USER_ROLES;
+	
+-------------------------------------------------INSERT_USER_DETAILS-----------------------------------
+
+PROCEDURE INSERT_USER_DETAILS(FIRST_NAME in VARCHAR2,LAST_NAME in VARCHAR2,PHONE_NO in NUMBER,EMAIL in VARCHAR2,USER_NAME in VARCHAR2,PASS_WORD in VARCHAR2,ADDRESS_LINE1 in VARCHAR2,ADDRESS_LINE2 in VARCHAR2,CITY in VARCHAR2,ZIPCODE in NUMBER,RESIDENCE_STATE in VARCHAR2,COUNTRY in VARCHAR2,DOB in DATE,SEX in VARCHAR2,ROLE_ID in NUMBER,DATE_CREATED in DATE)
+AS
+BEGIN
+dbms_output.put_line('----------------------------------------------------------');
+insert into USER_DETAILS(FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED) values (FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED);
+dbms_output.put_line('Row inserted into USER_DETAILS Table');
+dbms_output.put_line('----------------------------------------------------------');
+commit;
+exception
+when dup_val_on_index then
+dbms_output.put_line('Duplicate Value Found in USER_DETAILS! Insert Different Value');
+when others then
+dbms_output.put_line('Error while inserting data into USER_DETAILS Table');
+rollback;
+dbms_output.put_line('The error encountered is: ');
+dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('----------------------------------------------------------');
+end INSERT_USER_DETAILS;
+
+------------------------------------------------------INSERT_MGMT_DETAILS----------------------------------
+	PROCEDURE INSERT_MGMT_DETAILS(mg_comp_name in VARCHAR, mg_reg_status in CHAR, mg_datcreated in DATE)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into MANAGEMENT_DETAILS(M_COMPANY_NAME,M_REGISTRATION_STATUS,M_DATE_CREATED) values (mg_comp_name,mg_reg_status,mg_datcreated);
+	dbms_output.put_line('Row inserted into MANAGEMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found in MANAGEMENT_DETAILS! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into MANAGEMENT_DETAILS Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_MGMT_DETAILS;

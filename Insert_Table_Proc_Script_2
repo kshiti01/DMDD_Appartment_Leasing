@@ -23,14 +23,11 @@ create or replace PACKAGE BODY INSERTION
 ---------------------------------------------------------INSERT_USER_ROLES-------------------------
 PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR)
 	AS
-    roleid NUMBER;
     undefined_role EXCEPTION;
 	BEGIN
 	dbms_output.put_line('----------------------------------------------------------');
 	insert into USER_ROLES(ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE) values (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE);
-    --commit;
-    select ROLE_ID into roleid from USER_ROLES where USER_TYPE=USER_TYPE;
-        IF(roleid=1 and USER_TYPE='T')
+        IF(ROLE_ID=1 and USER_TYPE='T')
         THEN
             EXECUTE IMMEDIATE'CREATE ROLE TENANT';
             EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO TENANT';
@@ -45,7 +42,7 @@ PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIP
             EXECUTE IMMEDIATE'GRANT SELECT ON NOTIFICATION TO TENANT';
             commit;
             ----grants only for testing to be updated with views
-        ELSIF(roleid=2 and USER_TYPE='B')
+        ELSIF(ROLE_ID=2 and USER_TYPE='B')
         THEN
             EXECUTE IMMEDIATE'CREATE ROLE BROKER';
             EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO BROKER';
@@ -56,7 +53,7 @@ PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIP
             EXECUTE IMMEDIATE'GRANT SELECT ON LEASE_DETAILS TO BROKER';
             commit;
            ----grants only for testing to be updated with views
-        ELSIF(roleid=3 and USER_TYPE='M')
+        ELSIF(ROLE_ID=3 and USER_TYPE='M')
         THEN
             EXECUTE IMMEDIATE'CREATE ROLE MANAGEMENT';
             EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO MANAGEMENT';
@@ -73,7 +70,7 @@ PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIP
             EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON NOTIFICATION TO MANAGEMENT';
             commit;
             ----grants only for testing to be updated with views        
-        ELSIF(roleid=4 and USER_TYPE='U')
+        ELSIF(ROLE_ID=4 and USER_TYPE='U')
         THEN
             EXECUTE IMMEDIATE'CREATE ROLE R_USER';
             EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO R_USER';
@@ -84,7 +81,7 @@ PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIP
             EXECUTE IMMEDIATE'GRANT SELECT ON LEASE_DETAILS TO R_USER';
             commit;
             ----grants only for testing to be updated with views
-        ELSIF(roleid=5 and USER_TYPE='C')
+        ELSIF(ROLE_ID=5 and USER_TYPE='C')
         THEN
             EXECUTE IMMEDIATE'CREATE ROLE CONTRACTOR';
             EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO CONTRACTOR';

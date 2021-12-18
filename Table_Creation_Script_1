@@ -372,7 +372,6 @@ dbms_output.put_line('----------------------------------------------------------
 END;
 /
 
-
 ------------####7.BOOKING####-----------------------
 SET SERVEROUTPUT ON;
 create or replace procedure booking_details_creation is table_name varchar2(3000);
@@ -524,6 +523,40 @@ EXECUTE IMMEDIATE table_name;
 end tenant_details_creation;
 
 
+/
+DECLARE
+        tbl_name varchar2(50);
+        cnt NUMBER;
+    BEGIN
+        tbl_name := 'TENANT_DETAILS';
+        SELECT count(*) into cnt FROM user_tables where table_name = tbl_name;
+        IF(cnt > 0)
+        THEN
+                DBMS_OUTPUT.PUT_LINE('TABLE TENANT_DETAILS ALREADY EXISTS.');
+                dbms_output.put_line('-----------------------------------------------------------------------------------------------------------');
+        ELSE
+        -- call to table creation stored procedure 
+            BEGIN 
+             tenant_details_creation;
+            END;    
+        DBMS_OUTPUT.PUT_LINE('TABLE TENANT_DETAILS CREATED.');
+        dbms_output.put_line('-----------------------------------------------------------------------------------------------------------');
+        END IF;
+        EXCEPTION 
+          when no_data_found then
+           dbms_output.put_line('Table does not exist!'); 
+           -- call to table creation stored procedure 
+           BEGIN 
+             tenant_details_creation;
+             dbms_output.put_line('Table TENANT_DETAILS created successfully');
+             dbms_output.put_line('-----------------------------------------------------------------------------------------------------------');
+           END; 
+            when others
+                then
+                dbms_output.put_line('OOPS Something went wrong!');
+                dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('-----------------------------------------------------------------------------------------------------------');
+END;
 /
 DECLARE
         tbl_name varchar2(50);

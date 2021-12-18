@@ -1,0 +1,97 @@
+SET SERVEROUTPUT ON;
+
+drop table "APARTMENT_DETAILS" cascade constraints PURGE;
+drop table "BOOKING" cascade constraints PURGE;
+drop table "COMPLAINT_DETAILS" cascade constraints PURGE;
+drop table "CONTRACTOR_DETAILS" cascade constraints PURGE;
+drop table "LAUNDRY_DETAILS" cascade constraints PURGE;
+drop table "LEASE_DETAILS" cascade constraints PURGE;
+drop table "MAINTENANCE_DETAILS" cascade constraints PURGE;
+drop table "MANAGEMENT_DETAILS" cascade constraints PURGE;
+drop table "NOTIFICATION" cascade constraints PURGE;
+drop table "PAYMENT_DETAILS" cascade constraints PURGE;
+drop table "TENANT_DETAILS" cascade constraints PURGE;
+drop table "USER_DETAILS" cascade constraints PURGE;
+drop table "USER_ROLES" cascade constraints PURGE;
+
+drop PACKAGE INSERTION;
+
+drop procedure apartment_details_creation;
+drop procedure booking_details_creation;
+drop procedure complaint_details_creation;
+drop procedure contractor_details_creation;
+drop procedure LAUNDRY_DETAILS_CREATION;
+drop procedure lease_details_creation;
+drop procedure maintenance_details_creation;
+drop procedure management_details_creation;
+drop procedure notification_creation;
+drop procedure payment_details_creation;
+drop procedure tenant_details_creation;
+drop procedure user_details_creation;
+drop procedure USER_ROLE_CREATION;
+
+drop proc CANCEL_APTS_BKNG;
+drop proc INSRT_NEW_LEASE_DETAILS;
+drop proc MGMT_ADD_NEW_APTS;
+drop proc BOOKAPTS;
+  
+
+drop role R_USER;
+drop role TENANT;
+drop role BROKER;
+drop role MANAGEMENT;
+drop role CONTRACTOR;
+
+
+DECLARE
+uname varchar(50);
+sqlstmt varchar(1000);
+CURSOR c_uname IS
+   SELECT username from all_users WHERE TO_CHAR(trunc(CREATED))=TO_CHAR(trunc(SYSDATE)) and username not in ('ADMIN') ;
+BEGIN
+   OPEN c_uname;
+   LOOP
+   FETCH c_uname into uname;
+      EXIT WHEN c_uname%notfound;
+        DECLARE
+        vname varchar(50);
+        CURSOR c_vname IS
+            select view_name into vname from all_views WHERE OWNER ='uname'
+        BEGIN
+            OPEN c_vname;
+            LOOP
+            FETCH c_vname into vname;
+                EXIT WHEN c_vname%notfound;
+                dbms_output.put_line('view-');
+                dbms_output.put_line(vname);
+                EXECUTE IMMEDIATE 'DROP VIEW '||vname;
+            END LOOP;
+        CLOSE c_vname;
+        END;
+        DECLARE
+        sname varchar(50);
+        CURSOR c_sname IS
+            select synonym_name into sname from all_synonyms WHERE REGEXP_LIKE(synonym_name,''||uname||'$');
+        BEGIN
+            OPEN c_sname;
+            LOOP
+            FETCH c_sname into sname;
+                EXIT WHEN c_sname%notfound;
+                dbms_output.put_line('synonym-');
+                dbms_output.put_line(sname);
+                EXECUTE IMMEDIATE 'DROP PUBLIC SYNONYM "'||sname||'"';
+            END LOOP;
+        CLOSE c_sname;
+        END;
+      dbms_output.put_line('user-');
+      dbms_output.put_line(uname);
+      sqlstmt := 'DROP USER '||uname||' cascade';
+      EXECUTE IMMEDIATE sqlstmt;
+   END LOOP;
+   CLOSE c_uname;
+END;
+/
+
+
+	
+   

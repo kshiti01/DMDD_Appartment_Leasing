@@ -17,18 +17,14 @@ extend or terminate the lease.
 - Reports
 
 ##**INSTRUCTIONS**
--
--
--
--
--
--
+-Step 1: Run the SQL file Table_Creation_Script_1 to create tables using procedures
+-Step 2: Run the SQL file all_views_1-1 for view creation
+-Step 3: Run the SQL file Insert_Table_Proc_Script_2 package for data insertion procedure
+-Step 4: Run the SQL file Insert_values_script_3 to insert values into the created tables
+-Step 5: Run the SQL file user_creation_4 to create users
+-Step 6 : Run the SQL file Reports_Script_5 to generate reports
+-Step 7: Run the SQL file purge_DB_6 to drop procedures, tables and insertions.
+-Step 8: Report outputs seen in file Report Queries
 
-##**Test User Credentials**
-- Registered User -->  UserName: **testUser**  Password:**InfoDmdd123456**
-- Tenant --> UserName: **testTenant**   Password:**InfoDmdd123456**
-- Broker --> UserName: **testBroker**   Password:**InfoDmdd123456**
-- Management --> UserName: **testMgmt**   Password:**InfoDmdd123456**
-- Contractor -->UserName: **testCon**   Password:**InfoDmdd123456**
--  Execute as 
--  username connect;
+
+

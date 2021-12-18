@@ -910,6 +910,16 @@ create or replace PROCEDURE MGMT_ADD_NEW_APTS(AVAILABILITY in	VARCHAR2,NO_OF_TEN
 	end;
 /
 
+create or replace FUNCTION get_avail_apts (p_mgid IN NUMBER)
+	RETURN NUMBER
+	IS p_avail_apts NUMBER;
+BEGIN 
+	select count(aid) into p_avail_apts from 
+	apartment_details where mgid=p_mgid and 
+	AVAILABILITY='y';
+    RETURN(p_avail_apts);
+END;
+/
 
 
 

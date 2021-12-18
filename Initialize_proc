@@ -1,0 +1,31 @@
+---------------User Apt Booking---------------------
+create or replace PROCEDURE BOOKAPTS(user_id in NUMBER, aid in NUMBER, mgid in NUMBER, bkng_fees in NUMBER, bkng_status in CHAR,bkng_date in date)
+	AS
+    aid1 number;
+    bkng_failed EXCEPTION;
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	IF(bkng_status='B' and bkng_fees>500)
+	THEN
+    insert into BOOKING(user_id,aid,mgid,booking_fees,booking_status,booking_date) values (user_id,aid,mgid,bkng_fees,bkng_status,bkng_date);
+	select aid into aid1 from APARTMENT_DETAILS where aid=aid;
+    update APARTMENT_DETAILS set AVAILABILITY ='N' where aid=aid;
+    update lease_details set IS_ACTIVE='Y' where aid=aid1;
+	dbms_output.put_line('Booking for '||aid||'successfully compeleted');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	ELSE
+	raise bkng_failed;
+	END IF;
+    exception
+    WHEN NO_DATA_FOUND THEN
+    dbms_output.put_line('----------------------------------------------------------');
+    DBMS_OUTPUT.PUT_LINE('Please select valid apartment for booking!');
+	when bkng_failed then
+	dbms_output.put_line('Please input appropriate Booking status ');
+	when others then
+	dbms_output.put_line(SQLERRM);
+	dbms_output.put_line('Please provide the correct values for apartment booking!');
+	rollback;
+	end;
+/

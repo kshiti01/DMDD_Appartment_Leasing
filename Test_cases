@@ -1,0 +1,20 @@
+set serveroutput on;
+select * from booking;
+select * from apartment_details;
+select * from lease_details where aid='300';
+exec cancel_apts_bkng(410);
+
+Result
+----------------------------------------------------------
+Booking cancelled for  apartment :301successfully
+----------------------------------------------------------
+
+
+PL/SQL procedure successfully completed.
+
+----------------------------------------------------------
+Booking cancelled for  apartment :300successfully
+----------------------------------------------------------
+
+
+PL/SQL procedure successfully completed.

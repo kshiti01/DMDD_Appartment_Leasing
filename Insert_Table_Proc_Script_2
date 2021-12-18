@@ -361,3 +361,170 @@ PROCEDURE INSERT_COMPLAINT_DETAILS(C_REF_NO in NUMBER,C_RAISED_BY_NAME in VARCHA
 
 end;
 /
+
+
+########################UPDATES#######################
+
+------------####INSERT PROC####--------------
+------------####PACKAGE DEC####--------------
+create or replace PACKAGE INSERTION
+AS
+PROCEDURE INSERT_USER_ROLES(ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR);
+PROCEDURE INSERT_USER_DETAILS(FIRST_NAME in VARCHAR2,LAST_NAME in VARCHAR2,PHONE_NO in NUMBER,EMAIL in VARCHAR2,USER_NAME in VARCHAR2,PASS_WORD in VARCHAR2,ADDRESS_LINE1 in VARCHAR2,ADDRESS_LINE2 in VARCHAR2,CITY in VARCHAR2,ZIPCODE in NUMBER,RESIDENCE_STATE in VARCHAR2,COUNTRY in VARCHAR2,DOB in DATE,SEX in VARCHAR2,ROLE_ID in NUMBER,DATE_CREATED in DATE);
+PROCEDURE INSERT_MGMT_DETAILS(mg_comp_name in VARCHAR,mg_reg_status in CHAR,mg_datcreated in DATE);
+PROCEDURE INSERT_APARTMENT_DETAILS(AVAILABILITY in	VARCHAR2,NO_OF_TENANTS in	NUMBER,BUILDING_TYPE	in VARCHAR2,BUILT_YEAR in	NUMBER,LOCATION	in VARCHAR2,UNIT_NO	in NUMBER,SQT_AREA in	NUMBER,BUILDING_NO	in NUMBER,AC_SYSTEM	in CHAR,HEATER_SYSTEM	in CHAR,HOT_WATER in	CHAR,GAS_CONNECTION in	CHAR,ELECTRICITY	in CHAR,ASBESTOS	in CHAR,REFRIGARATOR	in CHAR,NO_OF_BEDROOMS	in CHAR,FLOOR_NO	in NUMBER,PARKING_AVAILABLE	in CHAR,NO_OF_KEYS	in NUMBER,OVEN	in CHAR,STATUS_KEYLOCK	in CHAR,STATUS_WINDOWS	in CHAR,STATUS_DOOR	in CHAR,STATUS_TOILETSINK	in CHAR,STATUS_WASHSINK	in CHAR,OWNER_NAME	in VARCHAR2,SPECIAL_DESCRIPTION	in VARCHAR2,NO_OF_BATHROOMS	in NUMBER,NO_OF_BALCONY	in VARCHAR2,BROKER_COMMISSION	in NUMBER,MGID	in NUMBER);
+PROCEDURE INSERT_CONTRACTOR_DETAILS(STAFF_ROLE in VARCHAR2,CO_SPECIALTY in VARCHAR2,CO_HOURS in NUMBER,CO_RATE in NUMBER,CO_EMP_START_DATE in DATE,CO_EMP_END_DATE in DATE,MGID in NUMBER);
+PROCEDURE INSERT_MAINTENANCE_DETAILS(MAINTENANCE_TYPE in VARCHAR2,MAINTENANCE_COMMENTS in VARCHAR2,FREQUENCY in NUMBER,DATE_LAST_DONE in DATE,COMPLIANCE_STATUS in CHAR,MGID in NUMBER);
+PROCEDURE INSERT_BOOKING_DETAILS(user_id in NUMBER, aid in NUMBER, mgid in NUMBER, bkng_fees in NUMBER, bkng_status in CHAR,bkng_date in date);
+PROCEDURE INSERT_LEASE_DETAILS(l_type in CHAR, l_start_date in DATE,l_end_date in DATE, is_sub_allowed in CHAR, sub_charges in NUMBER, is_active in CHAR, sec_deposit in NUMBER, bal_amt in NUMBER, dat_created in DATE, rent in NUMBER, is_cancel_allowed in CHAR,cancel_charges in NUMBER, cancel_status in VARCHAR, is_ext_allowed in CHAR, ext_status in CHAR,ext_charges in NUMBER, ext_comments in VARCHAR, new_start_dat in DATE, new_end_dat in DATE, new_rent in NUMBER,aid in NUMBER);
+PROCEDURE INSERT_TENANT_DETAILS(LID in NUMBER,ID_PROOF_SUBMITTED in CHAR,ID_PROOF_DOCUMENT_TYPE in VARCHAR);
+PROCEDURE INSERT_PAYMENT_DETAILS(LID in NUMBER,PAYMENT_DATE in DATE,PAYMENT_METHOD in VARCHAR2,PAYMENT_BY_NAME in VARCHAR2,PAYMENT_TO_NAME in VARCHAR2,PAYMENT_AMOUNT in NUMBER,PAYMENT_CATEGORY in VARCHAR2,PAYMENT_STATUS in CHAR);
+PROCEDURE INSERT_NOTIFICATION(ntfy_type in VARCHAR, ntfy_cmnts in VARCHAR, creation_date in DATE, ntfy_date in DATE, mgid in NUMBER, tid in NUMBER);
+PROCEDURE INSERT_LAUNDRY_DETAILS(LA_MACHINE_NO in NUMBER,LA_WASHING_LOAD in VARCHAR2,LA_DRYING_LOAD in VARCHAR2,LA_TIME_STARTED in TIMESTAMP,LA_TIME_ENDED in TIMESTAMP,LA_STATUS in CHAR,LA_FEE_WASHING in NUMBER,LA_FEE_DRYING in NUMBER,LA_PAYMENT_RECEIVED in CHAR,NID in NUMBER);
+PROCEDURE INSERT_COMPLAINT_DETAILS(C_REF_NO in NUMBER,C_RAISED_BY_NAME in VARCHAR2,C_RAISED_BY_APT in NUMBER,C_RAISED_TIME in TIMESTAMP,C_RAISED_DATE in DATE,C_CATEGORY in VARCHAR2,C_SEVERITY in VARCHAR2,C_DESCRIPTION in VARCHAR2,C_STATUS in CHAR,C_CLOSURE_DATE in DATE,CO_ID in NUMBER,NID in NUMBER);
+END;
+/
+create or replace PACKAGE BODY INSERTION
+	AS
+	
+---------------------------------------------------------INSERT_USER_ROLES-------------------------
+PROCEDURE INSERT_USER_ROLES(ROLE_ID in NUMBER,ROLE_NAME in VARCHAR2,ROLE_DESCRIPTION in VARCHAR2,USER_TYPE in CHAR)
+	AS
+    /*roleid NUMBER;*/
+    undefined_role EXCEPTION;
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into USER_ROLES(ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE) values (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,USER_TYPE);
+    --commit;
+    dbms_output.put_line('INSERTTTTTT'||ROLE_ID||'USERTYPE'||USER_TYPE);
+   /* select ROLE_ID into roleid from USER_ROLES where USER_TYPE=USER_TYPE and role_id=ROLE_ID;*/
+    dbms_output.put_line('SELECT FORM USERROLES'||ROLE_ID);
+        IF(ROLE_ID=1 and USER_TYPE='T')
+        THEN
+            EXECUTE IMMEDIATE'CREATE ROLE TENANT';
+            EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT ON APARTMENT_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT ON MANAGEMENT_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT ON LEASE_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON TENANT_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON LAUNDRY_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE ON PAYMENT_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE ON COMPLAINT_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT ON MAINTENANCE_DETAILS TO TENANT';
+            EXECUTE IMMEDIATE'GRANT SELECT ON NOTIFICATION TO TENANT';
+			EXECUTE IMMEDIATE'GRANT SELECT ON VIEW_TENANT TO TENANT';
+            commit;
+        
+        ELSIF(ROLE_ID=2 and USER_TYPE='M')
+        THEN
+            EXECUTE IMMEDIATE'CREATE ROLE MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON MANAGEMENT_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON BOOKING TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON APARTMENT_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON TENANT_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON LEASE_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON CONTRACTOR_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON LAUNDRY_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON PAYMENT_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON COMPLAINT_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON MAINTENANCE_DETAILS TO MANAGEMENT';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON NOTIFICATION TO MANAGEMENT';
+            commit;
+            ----grants only for testing to be updated with views        
+        ELSIF(ROLE_ID=3 and USER_TYPE='U')
+        THEN
+            EXECUTE IMMEDIATE'CREATE ROLE R_USER';
+            EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO R_USER';
+            EXECUTE IMMEDIATE'GRANT SELECT ON MANAGEMENT_DETAILS TO R_USER';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON BOOKING TO R_USER';
+            EXECUTE IMMEDIATE'GRANT SELECT ON APARTMENT_DETAILS TO R_USER';
+            EXECUTE IMMEDIATE'GRANT SELECT ON TENANT_DETAILS TO R_USER';
+            EXECUTE IMMEDIATE'GRANT SELECT ON LEASE_DETAILS TO R_USER';
+            commit;
+            
+        ELSIF(ROLE_ID=4 and USER_TYPE='C')
+        THEN
+            EXECUTE IMMEDIATE'CREATE ROLE CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT CREATE SESSION, CONNECT TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT ON MANAGEMENT_DETAILS TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT ON APARTMENT_DETAILS TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON CONTRACTOR_DETAILS TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON COMPLAINT_DETAILS TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE,DELETE ON MAINTENANCE_DETAILS TO CONTRACTOR';
+            EXECUTE IMMEDIATE'GRANT SELECT,UPDATE ON NOTIFICATION TO CONTRACTOR';
+			EXECUTE IMMEDIATE'GRANT SELECT ON VIEW_CONTRACTOR TO CONTRACTOR';
+
+
+            commit;
+            
+        ELSE
+            RAISE undefined_role;
+        END IF;  
+        dbms_output.put_line('Row inserted into USER_ROLES Table and ROLE '||ROLE_NAME||' has been created Successfully!!!');
+        dbms_output.put_line('----------------------------------------------------------');
+    
+	exception
+        when undefined_role then 
+        dbms_output.put_line('OOPS user role undefined..Please match appropriate roles');
+		rollback;
+        when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+        rollback;
+		when others then
+		dbms_output.put_line('Error while inserting data into USER_ROLES Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_USER_ROLES;
+	
+-------------------------------------------------INSERT_USER_DETAILS-----------------------------------
+
+PROCEDURE INSERT_USER_DETAILS(FIRST_NAME in VARCHAR2,LAST_NAME in VARCHAR2,PHONE_NO in NUMBER,EMAIL in VARCHAR2,USER_NAME in VARCHAR2,PASS_WORD in VARCHAR2,ADDRESS_LINE1 in VARCHAR2,ADDRESS_LINE2 in VARCHAR2,CITY in VARCHAR2,ZIPCODE in NUMBER,RESIDENCE_STATE in VARCHAR2,COUNTRY in VARCHAR2,DOB in DATE,SEX in VARCHAR2,ROLE_ID in NUMBER,DATE_CREATED in DATE)
+AS
+cnt NUMBER;
+BEGIN
+SELECT count(*) INTO cnt FROM all_users where username = UPPER(USER_NAME);
+IF(cnt > 0)
+    THEN
+    dbms_output.put_line('USER_NAME already exists...');
+ELSE
+    insert into USER_DETAILS(FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED) values (FIRST_NAME,LAST_NAME,PHONE_NO,EMAIL,USER_NAME,PASS_WORD,ADDRESS_LINE1,ADDRESS_LINE2,CITY,ZIPCODE,RESIDENCE_STATE,COUNTRY,DOB,SEX,ROLE_ID,DATE_CREATED);
+    EXECUTE IMMEDIATE'CREATE USER '||user_name||' IDENTIFIED BY '||pass_word;
+dbms_output.put_line('Row inserted into USER_DETAILS Table');
+dbms_output.put_line('----------------------------------------------------------');
+commit;
+END IF;
+exception
+when dup_val_on_index then
+dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+when others then
+dbms_output.put_line('Error while inserting data into USER_DETAILS Table');
+rollback;
+dbms_output.put_line('The error encountered is: ');
+dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('----------------------------------------------------------');
+end INSERT_USER_DETAILS;
+
+------------------------------------------------------INSERT_MGMT_DETAILS----------------------------------
+	PROCEDURE INSERT_MGMT_DETAILS(mg_comp_name in VARCHAR, mg_reg_status in CHAR, mg_datcreated in DATE)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into MANAGEMENT_DETAILS(M_COMPANY_NAME,M_REGISTRATION_STATUS,M_DATE_CREATED) values (mg_comp_name,mg_reg_status,mg_datcreated);
+	dbms_output.put_line('Row inserted into MANAGEMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into MANAGEMENT_DETAILS Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_MGMT_DETAILS;
+	
+	

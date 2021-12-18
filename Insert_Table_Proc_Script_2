@@ -590,3 +590,162 @@ PROCEDURE INSERT_MAINTENANCE_DETAILS(MAINTENANCE_TYPE in VARCHAR2,MAINTENANCE_CO
 			dbms_output.put_line(dbms_utility.format_error_stack);
 			dbms_output.put_line('----------------------------------------------------------');
 	end INSERT_MAINTENANCE_DETAILS;
+ -----------------------------INSERT_BOOKING_DETAILS----------------------------------
+    PROCEDURE INSERT_BOOKING_DETAILS(user_id in NUMBER, aid in NUMBER, mgid in NUMBER, bkng_fees in NUMBER, bkng_status in CHAR,bkng_date in date)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into BOOKING(user_id,aid,mgid,booking_fees,booking_status,booking_date) values (user_id,aid,mgid,bkng_fees,bkng_status,bkng_date);
+	dbms_output.put_line('Row inserted into BOOKING Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+	when dup_val_on_index then
+	dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+	when others then
+	dbms_output.put_line('Error while inserting data into BOOKING Table');
+	rollback;
+	dbms_output.put_line('The error encountered is: ');
+	dbms_output.put_line(dbms_utility.format_error_stack);
+	dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_BOOKING_DETAILS;	
+
+-------------------------------------------------LEASE_DETAILS--------------------------------------------------
+	PROCEDURE INSERT_LEASE_DETAILS(l_type in CHAR, l_start_date in DATE,l_end_date in DATE, is_sub_allowed in CHAR, sub_charges in NUMBER, is_active in CHAR,sec_deposit in NUMBER, bal_amt in NUMBER, dat_created in DATE, rent in NUMBER, is_cancel_allowed in CHAR,cancel_charges in NUMBER, cancel_status in VARCHAR, is_ext_allowed in CHAR, ext_status in CHAR,ext_charges in NUMBER, ext_comments in VARCHAR, new_start_dat in DATE, new_end_dat in DATE, new_rent in NUMBER,aid in NUMBER)
+	AS
+    lid1 number;
+    aid1 number;
+    user_id1 number;
+    user_name1 VARCHAR2(100);
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+    dbms_output.put_line(l_start_date);
+	insert into LEASE_DETAILS(LEASE_TYPE,LEASE_START_DATE,LEASE_END_DATE,IS_SUBLET_ALLOWED,SUBLETTING_CHARGES,IS_ACTIVE,SECURITY_DEPOSIT,BALANCE_AMOUNT,DATE_CREATED,RENT,IS_CANCELLATION_ALLOWED,CANCELLATION_CHARGES,CANCEL_STATUS,IS_EXTENSION_ALLOWED,EXTENSION_STATUS,EXTENSION_CHARGES,EXTENSION_COMMENTS,NEW_START_DATE,NEW_END_DATE,NEW_RENT,AID) values (l_type,l_start_date,l_end_date,is_sub_allowed,sub_charges,is_active,sec_deposit,bal_amt,dat_created,rent,is_cancel_allowed,cancel_charges,cancel_status,is_ext_allowed,ext_status,ext_charges,ext_comments,new_start_dat,new_end_dat,new_rent,aid);
+	select max(lid) into lid1 from lease_details;
+    dbms_output.put_line('lid'||lid1);
+    --select aid into aid1 from lease_details where lid=lid1;
+    select user_id into user_id1 from booking where aid =aid and booking_status='B';
+    select user_name into user_name1 from user_details where user_id=user_id1;
+    update user_details set role_id=1 where user_id=user_id1;
+    EXECUTE IMMEDIATE 'REVOKE R_USER FROM '||user_name1;
+    EXECUTE IMMEDIATE 'GRANT TENANT TO '||user_name1;
+    dbms_output.put_line('Row inserted into LEASE_DETAILS Table');
+    dbms_output.put_line('Welcome to apartment "'||aid||'"');
+    dbms_output.put_line('You are all set TENANT :'||user_name1);
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into LEASE_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_LEASE_DETAILS;
+   	
+--------------------------INSERT_TENANT_DETAILS-----------------------------------
+PROCEDURE INSERT_TENANT_DETAILS(LID in NUMBER,ID_PROOF_SUBMITTED in CHAR,ID_PROOF_DOCUMENT_TYPE in VARCHAR)
+AS
+BEGIN
+    dbms_output.put_line('----------------------------------------------------------');
+    insert into TENANT_DETAILS(LID,ID_PROOF_SUBMITTED,ID_PROOF_DOCUMENT_TYPE) values (LID,ID_PROOF_SUBMITTED,ID_PROOF_DOCUMENT_TYPE);
+    dbms_output.put_line('Row inserted into TENANT_DETAILS Table');
+    dbms_output.put_line('----------------------------------------------------------');
+    commit;
+    exception
+    when dup_val_on_index then
+    dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+    when others then
+    dbms_output.put_line('Error while inserting data into TENANT_DETAILS Table');
+    rollback;
+    dbms_output.put_line('The error encountered is: ');
+    dbms_output.put_line(dbms_utility.format_error_stack);
+    dbms_output.put_line('----------------------------------------------------------');
+end INSERT_TENANT_DETAILS;
+
+----------------------------------INSERT_PAYMENT_DETAILS--------------------------------
+PROCEDURE INSERT_PAYMENT_DETAILS(LID in NUMBER,PAYMENT_DATE in DATE,PAYMENT_METHOD in VARCHAR2,PAYMENT_BY_NAME in VARCHAR2,PAYMENT_TO_NAME in VARCHAR2,PAYMENT_AMOUNT in NUMBER,PAYMENT_CATEGORY in VARCHAR2,PAYMENT_STATUS in CHAR)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into PAYMENT_DETAILS(LID,PAYMENT_DATE,PAYMENT_METHOD,PAYMENT_BY_NAME,PAYMENT_TO_NAME,PAYMENT_AMOUNT,PAYMENT_CATEGORY,PAYMENT_STATUS) values (LID,PAYMENT_DATE,PAYMENT_METHOD,PAYMENT_BY_NAME,PAYMENT_TO_NAME,PAYMENT_AMOUNT,PAYMENT_CATEGORY,PAYMENT_STATUS);
+	dbms_output.put_line('Row inserted into PAYMENT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into PAYMENT_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_PAYMENT_DETAILS;
+
+-----------------------------------------------INSERT_NOTIFICATION--------------------------------
+PROCEDURE INSERT_NOTIFICATION(ntfy_type in VARCHAR, ntfy_cmnts in VARCHAR, creation_date in DATE, ntfy_date in DATE, mgid in NUMBER, tid in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into NOTIFICATION(NOTIFICATION_TYPE, NOTIFICATION_COMMENTS, DATE_CREATED, NOTIFICATION_DATE, MGID, TID) values (ntfy_type, ntfy_cmnts, creation_date, ntfy_date, mgid, tid);
+	dbms_output.put_line('Row inserted into NOTIFICATION Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into NOTIFICATION Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_NOTIFICATION;
+
+------------------------------------INSERT_LAUNDRY_DETAILS--------------------------------
+PROCEDURE INSERT_LAUNDRY_DETAILS(LA_MACHINE_NO in NUMBER,LA_WASHING_LOAD in VARCHAR2,LA_DRYING_LOAD in VARCHAR2,LA_TIME_STARTED in TIMESTAMP,LA_TIME_ENDED in TIMESTAMP,LA_STATUS in CHAR,LA_FEE_WASHING in NUMBER,LA_FEE_DRYING in NUMBER,LA_PAYMENT_RECEIVED in CHAR,NID in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into LAUNDRY_DETAILS(LA_MACHINE_NO,LA_WASHING_LOAD,LA_DRYING_LOAD,LA_TIME_STARTED,LA_TIME_ENDED,LA_STATUS,LA_FEE_WASHING,LA_FEE_DRYING,LA_PAYMENT_RECEIVED,NID) values (LA_MACHINE_NO,LA_WASHING_LOAD,LA_DRYING_LOAD,LA_TIME_STARTED,LA_TIME_ENDED,LA_STATUS,LA_FEE_WASHING,LA_FEE_DRYING,LA_PAYMENT_RECEIVED,NID);
+	dbms_output.put_line('Row inserted into LAUNDRY_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+	commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into LAUNDRY_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_LAUNDRY_DETAILS;
+
+-----------------------INSERT_COMPLAINT_DETAILS-------------------------
+PROCEDURE INSERT_COMPLAINT_DETAILS(C_REF_NO in NUMBER,C_RAISED_BY_NAME in VARCHAR2,C_RAISED_BY_APT in NUMBER,C_RAISED_TIME in TIMESTAMP,C_RAISED_DATE in DATE,C_CATEGORY in VARCHAR2,C_SEVERITY in VARCHAR2,C_DESCRIPTION in VARCHAR2,C_STATUS in CHAR,C_CLOSURE_DATE in DATE,CO_ID in NUMBER,NID in NUMBER)
+	AS
+	BEGIN
+	dbms_output.put_line('----------------------------------------------------------');
+	insert into COMPLAINT_DETAILS(C_REF_NO,C_RAISED_BY_NAME,C_RAISED_BY_APT,C_RAISED_TIME,C_RAISED_DATE,C_CATEGORY,C_SEVERITY,C_DESCRIPTION,C_STATUS,C_CLOSURE_DATE,CO_ID,NID) values (C_REF_NO,C_RAISED_BY_NAME,C_RAISED_BY_APT,C_RAISED_TIME,C_RAISED_DATE,C_CATEGORY,C_SEVERITY,C_DESCRIPTION,C_STATUS,C_CLOSURE_DATE,CO_ID,NID);
+	dbms_output.put_line('Row inserted into COMPLAINT_DETAILS Table');
+	dbms_output.put_line('----------------------------------------------------------');
+    commit;
+	exception
+		when dup_val_on_index then
+		dbms_output.put_line('Duplicate Value Found!! Insert Different Value');
+		when others then
+		dbms_output.put_line('Error while inserting data into COMPLAINT_DETAILS Table');
+		rollback;
+			dbms_output.put_line('The error encountered is: ');
+			dbms_output.put_line(dbms_utility.format_error_stack);
+			dbms_output.put_line('----------------------------------------------------------');
+	end INSERT_COMPLAINT_DETAILS;
+
+end;
+
+end;
+/
